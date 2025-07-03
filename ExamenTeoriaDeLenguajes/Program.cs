@@ -1,6 +1,4 @@
-﻿// --- Las clases de vehículos (AutoElectrico, etc.) permanecen igual ---
-
-/// <summary>
+﻿/// <summary>
 /// Clase base abstracta para todos los vehículos eléctricos.
 /// Contiene propiedades y métodos comunes.
 /// </summary>
@@ -32,14 +30,14 @@ public abstract class VehiculoElectrico
     }
 
     /// <summary>
-    /// Método abstracto para cargar la batería. La implementación varía en cada subclase.
+    /// Metodo abstracto para cargar la batería. La implementación varía en cada subclase.
     /// </summary>
     public abstract void CargarBateria();
 
     /// <summary>
-    /// Método abstracto que devuelve el consumo de batería por kilómetro.
+    /// Metodo abstracto que devuelve el consumo de bateria por kilometro.
     /// </summary>
-    /// <returns>El porcentaje (%) de batería consumido por km.</returns>
+    /// <returns>El porcentaje (%) de bateria consumido por km.</returns>
     public abstract double ConsumoPorKm();
 
     public override string ToString()
@@ -49,7 +47,7 @@ public abstract class VehiculoElectrico
 }
 
 /// <summary>
-/// Representa un Auto Eléctrico.
+/// Representa un Auto Electrico.
 /// </summary>
 public class AutoElectrico : VehiculoElectrico
 {
@@ -65,12 +63,12 @@ public class AutoElectrico : VehiculoElectrico
 
     public override double ConsumoPorKm()
     {
-        return 0.3; // Consume 0.3% de batería por km
+        return 0.3; // Consume 0.3% de bateria por km
     }
 }
 
 /// <summary>
-/// Representa una Motocicleta Eléctrica.
+/// Representa una Motocicleta Electrica.
 /// </summary>
 public class MotocicletaElectrica : VehiculoElectrico
 {
@@ -86,12 +84,12 @@ public class MotocicletaElectrica : VehiculoElectrico
 
     public override double ConsumoPorKm()
     {
-        return 0.15; // Consume 0.15% de batería por km
+        return 0.15; // Consume 0.15% de bateria por km
     }
 }
 
 /// <summary>
-/// Representa una Bicicleta Eléctrica.
+/// Representa una Bicicleta Electrica.
 /// </summary>
 public class BicicletaElectrica : VehiculoElectrico
 {
@@ -112,7 +110,7 @@ public class BicicletaElectrica : VehiculoElectrico
 }
 
 
-// --- Lógica de la Aplicación Interactiva ---
+// --- Logica de la Aplicacion Interactiva ---
 
 public class Program
 {
