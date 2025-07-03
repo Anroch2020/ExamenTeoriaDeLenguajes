@@ -1,5 +1,4 @@
-﻿
-// --- Clases que representan los Vehículos (Paradigma POO) ---
+﻿// --- Las clases de vehículos (AutoElectrico, etc.) permanecen igual ---
 
 /// <summary>
 /// Clase base abstracta para todos los vehículos eléctricos.
@@ -113,13 +112,13 @@ public class BicicletaElectrica : VehiculoElectrico
 }
 
 
-// --- Lógica de la Aplicación (Uso de Paradigma Funcional con LINQ) ---
+// --- Lógica de la Aplicación Interactiva ---
 
 public class Program
 {
     public static void Main(string[] args)
     {
-        // 1. Generar una lista de vehículos de diferentes tipos.
+        // Generar la lista inicial de vehículos.
         var flota = new List<VehiculoElectrico>
         {
             new AutoElectrico("Tesla", "Model 3", 500, 65.5),
@@ -131,49 +130,76 @@ public class Program
             new AutoElectrico("Ford", "Mustang ME", 480, 8.5),
         };
 
-        Console.WriteLine("--- Flota de Vehículos Eléctricos ---");
-        flota.ForEach(v => Console.WriteLine(v));
-        Console.WriteLine("\n" + new string('-', 40) + "\n");
+        bool salir = false;
+        while (!salir)
+        {
+            Console.WriteLine("\n--- Gestión de Flota de Vehículos Eléctricos ---");
+            Console.WriteLine("1. Ver todos los vehículos de la flota");
+            Console.WriteLine("2. Mostrar vehículos con batería baja (< 20%)");
+            Console.WriteLine("3. Mostrar marcas con buena carga (> 50%)");
+            Console.WriteLine("4. Calcular consumo total de la flota por Km");
+            Console.WriteLine("5. Cargar batería de un vehículo con poca carga");
+            Console.WriteLine("6. Salir");
+            Console.Write("Seleccione una opción: ");
 
-        // 2. Filtrar y mostrar vehículos con menos del 20% de batería.
-        Console.WriteLine("--- Vehículos con Batería Baja (< 20%) ---");
-        var vehiculosBateriaBaja = flota.Where(v => v.CargaActual < 20);
-        
-        if (!vehiculosBateriaBaja.Any())
-        {
-            Console.WriteLine("Ningún vehículo tiene la batería baja.");
-        }
-        else
-        {
-            foreach (var vehiculo in vehiculosBateriaBaja)
+            string? opcion = Console.ReadLine();
+            Console.Clear(); // Limpia la consola para una mejor experiencia
+
+            switch (opcion)
             {
-                Console.WriteLine(vehiculo);
+                case "1":
+                    Console.WriteLine("--- Flota Completa ---");
+                    flota.ForEach(v => Console.WriteLine(v));
+                    break;
+                case "2":
+                    Console.WriteLine("--- Vehículos con Batería Baja (< 20%) ---");
+                    var vehiculosBateriaBaja = flota.Where(v => v.CargaActual < 20).ToList();
+                    if (!vehiculosBateriaBaja.Any())
+                        Console.WriteLine("Ningún vehículo tiene la batería baja.");
+                    else
+                        vehiculosBateriaBaja.ForEach(v => Console.WriteLine(v));
+                    break;
+                case "3":
+                    Console.WriteLine("--- Marcas de Vehículos con Buena Carga (> 50%) ---");
+                    var marcasConBuenaCarga = flota.Where(v => v.CargaActual > 50).Select(v => v.Marca).Distinct().ToList();
+                     if (!marcasConBuenaCarga.Any())
+                        Console.WriteLine("Ningún vehículo tiene carga superior al 50%.");
+                    else
+                        marcasConBuenaCarga.ForEach(m => Console.WriteLine($"- {m}"));
+                    break;
+                case "4":
+                    Console.WriteLine("--- Consumo Total de la Flota ---");
+                    double consumoTotal = flota.Sum(v => v.ConsumoPorKm());
+                    Console.WriteLine($"El consumo total de la flota por kilómetro es: {consumoTotal:F2}% de batería por Km.");
+                    break;
+                case "5":
+                     Console.WriteLine("--- Cargar Batería ---");
+                     var vehiculoParaCargar = flota.FirstOrDefault(v => v.CargaActual < 100);
+                     if(vehiculoParaCargar == null)
+                     {
+                        Console.WriteLine("¡Todos los vehículos están completamente cargados!");
+                     }
+                     else
+                     {
+                        Console.WriteLine($"Vehículo seleccionado para cargar: {vehiculoParaCargar.Marca} {vehiculoParaCargar.Modelo}");
+                        vehiculoParaCargar.CargarBateria();
+                        Console.WriteLine($"Estado actual: {vehiculoParaCargar}");
+                     }
+                    break;
+                case "6":
+                    salir = true;
+                    Console.WriteLine("¡Hasta luego!");
+                    break;
+                default:
+                    Console.WriteLine("Opción no válida. Por favor, intente de nuevo.");
+                    break;
+            }
+             if (!salir)
+            {
+                Console.WriteLine("\nPresione cualquier tecla para volver al menú...");
+                Console.ReadKey();
+                Console.Clear();
             }
         }
-        Console.WriteLine("\n" + new string('-', 40) + "\n");
-        
-        // 3. Obtener las marcas de vehículos con más del 50% de batería.
-        Console.WriteLine("--- Marcas de Vehículos con Buena Carga (> 50%) ---");
-        var marcasConBuenaCarga = flota
-            .Where(v => v.CargaActual > 50)
-            .Select(v => v.Marca);
-
-        if (!marcasConBuenaCarga.Any())
-        {
-             Console.WriteLine("Ningún vehículo tiene carga superior al 50%.");
-        }
-        else
-        {
-            foreach (var marca in marcasConBuenaCarga)
-            {
-                Console.WriteLine($"- {marca}");
-            }
-        }
-        Console.WriteLine("\n" + new string('-', 40) + "\n");
-
-        // 4. Calcular el consumo total por kilómetro de toda la flota.
-        Console.WriteLine("--- Consumo Total de la Flota ---");
-        double consumoTotal = flota.Sum(v => v.ConsumoPorKm());
-        Console.WriteLine($"El consumo total de la flota por kilómetro es: {consumoTotal:F2}% de batería por Km.");
     }
 }
